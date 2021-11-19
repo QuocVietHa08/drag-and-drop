@@ -1,25 +1,57 @@
-.container{
-    margin:8px;
-    border:1px solid lightgray;
-    border-radius: 2px;
-    width: 220px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
+.container {
+  margin: 8px;
+  padding-right: 20px;
+  /* border: 1px solid lightgray; */
+  border-radius: 2px;
+  width: 220px;
+  background-color: lightblue;
+  display: flex;
+  padding-bottom: 10px;
+  flex-direction: column;
+}
+.deteleBtn {
+  text-align: center;
+  background-color: white;
+  color: black;
+  padding: 1px;
+  border: 1px solid black;
+  width: 50px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.title {
+  padding: 5px;
+}
+.flex {
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-around;
+  background-color: lightblue;
+}
+.input {
+  outline: none;
+  width: 100%;
+  border: none;
+}
+.tasklist {
+  padding: 8px;
 }
 
-.title{
-    padding: 8px;
+.task_container {
+  /* border:1px solid lightgrey; */
+  border-radius: 2px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: white;
 }
 
-.tasklist{
-    padding: 8px;   
-}
-
-.task_container{
-    /* border:1px solid lightgrey; */
-    border-radius: 2px;
-    padding:8px;
-    margin-bottom: 8px;
-    background-color: white;
+.wrapper {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: lightblue;
+  margin: 10px;
+  border-radius: 10px;
+  /* background-color: red; */
 }

@@ -4,6 +4,10 @@ import styled from 'styled-components'
 import {Draggable} from 'react-beautiful-dnd'
 
 function Task(props) {
+    const {state, setState}  = props;
+    console.log(state,"xin chao");
+
+    
     const taskStyle = {
         backgroundColor: `${props => props.isDragging ? 'lightgreen' : 'red' }`
     }
@@ -33,7 +37,7 @@ function Task(props) {
                 isDragging={snapshot.isDragging}
                 className={styles.task_container}>
                 <Handle {...provided.dragHandleProps} />
-                {props.task?.content} 
+                {props.task?.content}               
                 </Container>
             )}
          </Draggable>

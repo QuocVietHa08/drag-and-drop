@@ -1,137 +1,163 @@
-import React from 'react'
-import initialData from './initial-data'
-import Column from './Column'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import styled from 'styled-components'
+import React, { useState } from 'react'
+// import initialData from './initial-data'
+// import Column from './Column'
+// import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+// import styled from 'styled-components'
+// import Sidebar from './component/Sidebar/Sidebar'
 
-const Container = styled.div`
-  display: flex;
-`
+import {
+  BrowserRouter as Router,
+   Route,Link, Switch,
+   Routes
+} from 'react-router-dom'
+import DnDComponent from './DnDComponent'
+import GridComponent from './GridComponent'
 
-class App extends React.Component {
-  state = initialData
+// const Container = styled.div`
+//  display: flex;
+//  flex-wrap:wrap;
+//  border:1px solid black;
+//  width:990px;
+//  border-radius:10px;
+// `
 
-  onDragEnd = (result) => {
-    document.body.style.color = 'inherit'
-    document.body.style.backgroundColor = 'inherit'
-    const { destination, source, draggableId, type } = result
-    console.log(result, '3')
+// const Wrapper = styled.div`
+//   display:flex;
+// `
 
-    if (!destination) {
-      return
-    }
-    if (
-      destination.droppableId === source.draggableId &&
-      destination.index === source.index
-    ) {
-      return
-    }
-    //reorderting columns
-    if(type === 'column'){
-      const newColumnOrder = Array.from(this.state.columnOrder);
-      newColumnOrder.splice(source.index, 1);
-      newColumnOrder.splice(destination.index, 0, draggableId);
+function App(){
+  // const [state, setState] = useState(initialData);
 
-      const newState = {
-        ...this.state,
-        columnOrder: newColumnOrder,
-      };
-      this.setState(newState);
-      return;
-    }
+  // const onDragEnd = (result) => {
+  //   document.body.style.color = 'inherit'
+  //   document.body.style.backgroundColor = 'inherit'
+  //   const { destination, source, draggableId, type } = result
 
-    //ordering an array
-    const start = this.state.columns[source.droppableId]
-    const finish = this.state.columns[destination.droppableId]
+  //   if (!destination) {
+  //     return
+  //   }
+  //   if (
+  //     destination.droppableId === source.draggableId &&
+  //     destination.index === source.index
+  //   ) {
+  //     return 
+  //   }
+  //   //reorderting columns
+  //   if(type === 'column'){
+  //     const newColumnOrder = Array.from(state.columnOrder);
+  //     newColumnOrder.splice(source.index, 1);
+  //     newColumnOrder.splice(destination.index, 0, draggableId);
 
-    if (start == finish) {
-      const newTaskIds = Array.from(start.taskIds)
-      newTaskIds.splice(source.index, 1)
-      newTaskIds.splice(destination.index, 0, draggableId)
+  //     const newState = {
+  //       ...state,
+  //       columnOrder: newColumnOrder,
+  //     };
+  //     setState(newState)
+  //     // this.setState(newState);
+  //     return;
+  //   }
 
-      const newColumn = {
-        ...start,
-        taskIds: newTaskIds,
-      }
+  //   //ordering an array
+  //   const start = this.state.columns[source.droppableId]
+  //   const finish = this.state.columns[destination.droppableId]
 
-      const newState = {
-        ...this.state,
-        columns: {
-          ...this.state.columns,
-          [newColumn.id]: newColumn,
-        },
-      }
+  //   if (start == finish) {
+  //     const newTaskIds = Array.from(start.taskIds)
+  //     newTaskIds.splice(source.index, 1)
+  //     newTaskIds.splice(destination.index, 0, draggableId)
 
-      this.setState(newState)
-      return
-    }
+  //     const newColumn = {
+  //       ...start,
+  //       taskIds: newTaskIds,
+  //     }
 
-    //moving from one list to another
-    const startTaskIds = Array.from(start.taskIds)
-    console.log('1', startTaskIds)
-    startTaskIds.splice(source.index, 1)
-    const newStart = {
-      ...start,
-      taskIds: startTaskIds,
-    }
+  //     const newState = {
+  //       ...state,
+  //       columns: {
+  //         ...state.columns,
+  //         [newColumn.id]: newColumn,
+  //       },
+  //     }
+  //     setState(newState)
+  //     // this.setState(newState)
+  //     return
+  //   }
 
-    const finishTaskIds = Array.from(finish.taskIds)
-    console.log('2', finishTaskIds)
-    finishTaskIds.splice(destination.index, 0, draggableId)
-    const newFinish = {
-      ...finish,
-      taskIds: finishTaskIds,
-    }
+  //   //moving from one list to another
+  //   const startTaskIds = Array.from(start.taskIds)
+  //   startTaskIds.splice(source.index, 1)
+  //   const newStart = {
+  //     ...start,
+  //     taskIds: startTaskIds,
+  //   }
 
-    const newState = {
-      ...this.state,
-      columns: {
-        ...this.state.columns,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish,
-      },
-    }
-    this.setState(newState)
-  }
+  //   const finishTaskIds = Array.from(finish.taskIds)
+  //   finishTaskIds.splice(destination.index, 0, draggableId)
+  //   const newFinish = {
+  //     ...finish,
+  //     taskIds: finishTaskIds,
+  //   }
 
-  onDragStart = () => {
-    document.body.style.color = 'gray'
-    // document.body.style.backgroundColor = 'lightblue';
-    document.body.style.transition = 'background-color 0.2s ease'
-  }
-  onDragUpdate = (update) => {
-    const { destination } = update
-    const opacity = destination
-      ? destination.index / Object.keys(this.state.tasks).length
-      : 0
-    // document.body.style.backgroundColor = `rgba(153,141,217,${opacity})`;
-  }
-  render() {
+  //   const newState = {
+  //     ...this.state,
+  //     columns: {
+  //       ...this.state.columns,
+  //       [newStart.id]: newStart,
+  //       [newFinish.id]: newFinish,
+  //     },
+  //   }
+  //   this.setState(newState)
+  // }
+
+  // const onDragStart = () => {
+  //   document.body.style.color = 'gray'
+  //   // document.body.style.backgroundColor = 'lightblue';
+  //   document.body.style.transition = 'background-color 0.2s ease'
+  // }
+  // const onDragUpdate = (update) => {
+  //   const { destination } = update
+  //   const opacity = destination
+  //     ? destination.index / Object.keys(state.tasks).length
+  //     : 0
+  //   // document.body.style.backgroundColor = `rgba(153,141,217,${opacity})`;
+  // }
+  // console.log(state.columns['column-7'],"11");
     return (
-      <DragDropContext
-        onDragStart={this.onDragStart}
-        onDragUpdate={this.onDragUpdate}
-        onDragEnd={this.onDragEnd}>
-        <Droppable
-          droppableId="all-columns"
-          direction="horizontal"
-          type="column">
-          {(provided) => (
-            <Container {...provided.droppableProps} ref={provided.innerRef}>
-              {this.state.columnOrder.map((columnId,index) => {
-                const column = this.state.columns[columnId]
-                const tasks = column.taskIds.map(
-                  (taskId) => this.state.tasks[taskId]
-                )
+      // <Wrapper>
+      // <DragDropContext
+      //   onDragStart={onDragStart}
+      //   onDragUpdate={onDragUpdate}
+      //   onDragEnd={onDragEnd}>
+      //   <Droppable
+      //     droppableId="all-columns"
+      //     // direction="horizontal"
+      //     type="column">
+      //     {(provided) => (
+      //       <Container {...provided.droppableProps} ref={provided.innerRef}>
+      //         {state?.columnOrder.map((columnId,index) => {
+      //           const column = state.columns[columnId]
+      //           // if(!column.taskIds){
+      //           //   return; 
+      //           // }
+      //           // const tasks = column?.taskIds?.map(
+      //           //   (taskId) => state?.tasks[taskId]
+      //           // )
 
-                return <Column index={index} key={column.id} column={column} tasks={tasks} />
-              })}
-              {provided.placeholder}
-            </Container>
-          )}
-        </Droppable>
-      </DragDropContext>
+      //           return <Column index={index} state={state} setState={setState} key={column.id} column={column}  />
+      //         })}
+      //         {provided.placeholder}
+      //       </Container>
+      //     )}
+      //   </Droppable>
+      //   </DragDropContext>
+      //       <Sidebar state={state} setState={setState} />
+      //   </Wrapper>
+      <Router>
+            <Routes>
+              <Route path="/dnd" element={<DnDComponent />}/>
+              <Route path="/grid" element={<GridComponent />} />
+            </Routes>
+      </Router>
     )
-  }
 }
 export default App
